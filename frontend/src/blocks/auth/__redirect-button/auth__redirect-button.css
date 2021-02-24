@@ -1,0 +1,10 @@
+.auth__redirect-button{
+  color: #fff;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.auth__redirect-button:hover{
+  opacity: 0.6;
+  cursor: pointer;
+}

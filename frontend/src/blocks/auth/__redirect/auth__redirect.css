@@ -1,0 +1,8 @@
+.auth__redirect{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin: 15px auto 0;
+  font-size: 14px;
+  color: #fff;
+}
