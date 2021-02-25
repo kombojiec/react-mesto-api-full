@@ -1,0 +1,5 @@
+.profile__author{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
