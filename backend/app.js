@@ -25,6 +25,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);// Логгер запросов
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.post('/signup', registration, createUser);
 app.post('/signin', authorization, login);
 app.use(auth);
