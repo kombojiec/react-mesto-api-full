@@ -1,27 +1,22 @@
 const { Schema, model } = require('mongoose');
+const {isEmail} = require('validator');
 
 const userSchema = new Schema({
-  name: {
-    required: true,
+  email: {
     type: String,
-    minlength: 2,
-    maxlength: 30,
-  },
-  about: {
     required: true,
-    type: String,
-    minlength: 2,
-    maxlength: 30,
+    unique: true,
+    validate: [isEmail, 'Invalid Em@il'],
   },
-  avatar: {
+  password: {
+    type: String,
     required: true,
-    type: String,
+    minlength: 6,
+    select: false,
   },
+  name: { type: String, default: 'Жак-Ив Кусто' },
+  about: { type: String, default: 'Исследователь' },
+  avatar: { type: String, default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png' },
 });
-
-userSchema.path('avatar').validate((value) => {
-  const urlRegex = /(http|https):\/\/(www\.)?(\w+)(\S+)#?/;
-  return urlRegex.test(value);
-}, 'Invalid URL.');
 
 module.exports = model('user', userSchema);

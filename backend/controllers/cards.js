@@ -1,4 +1,7 @@
 const Card = require('../models/cards');
+const jwt = require('jsonwebtoken');
+const errors = require('../errors/errors');
+const { JWT_SECRET } = require('../config/index');
 
 const createCard = (req, res) => {
   const { name, link } = req.body;
@@ -24,9 +27,16 @@ const getCards = (req, res) => {
 };
 
 const removeCard = (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.replace('Bearer ', '');
+  const { _id } = jwt.verify(token, JWT_SECRET);
+  const card = Card.findById(req.params.id);
+  if (card.owner._id !== _id) {
+    throw new errors.Conflict('Можно удалять только свои фоточки.');
+  }
   Card.findOneAndRemove(req.params.id)
     .orFail(new Error('Not Found'))
-    .then((card) => res.send(card))
+    .then((item) => res.send(item))
     .catch((error) => {
       if (error.message === 'Not Found') {
         res.status(404).send({ message: 'Такой карточки нет.' });

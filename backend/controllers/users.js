@@ -1,16 +1,52 @@
+const bcrypt = require('bcryptjs');
+const celebrate = require('celebrate')
+const jwt = require('jsonwebtoken');
 const User = require('../models/users');
+const errors = require('../errors/errors')
+const {JWT_SECRET, JWT__TTL} = require('../config/index');
 
-const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err._message === 'user validation failed') {
-        res.status(400).send({ message: 'Не корректные данные' });
-      } else {
-        res.status(500).send({ message: 'Что-то пошло не так...' });
+const createUser = (req, res, next) => {
+  const {name, email, password, avatar, about } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new errors.Conflict('Em@il уже существует');
       }
-    });
+      return bcrypt.hash(password, 10);
+    })
+    .then((hash) => User.create({
+      about, avatar, name, email, password: hash,
+    }))
+    .then((user) => {
+      const { _id } = user;
+      res.send({name, email, _id, avatar, about});
+    })
+
+    .catch(next);
+};
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new errors.Unauthorized('Неправильный логин или пароль');
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (matched) {
+            return user;
+          }
+          throw new errors.Unauthorized('Неправильный логин или пароль');
+        });
+    })
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: JWT__TTL });
+      res.send({ jwt: token });
+    })
+    .catch(next);
 };
 
 const getUsers = (req, res) => {
@@ -78,4 +114,5 @@ module.exports = {
   getUserById,
   updateUserInfo,
   updateUserAvatar,
+  login,
 };
