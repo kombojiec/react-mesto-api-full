@@ -1,5 +1,3 @@
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');

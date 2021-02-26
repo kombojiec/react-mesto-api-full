@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
     throw new errors.BadRequest(err.details.get('body'));
   }
   if (err.status) {
-    return res.status(err.status).send({message: err.message});
+    return res.status(err.status).send({ message: err.message });
   }
   throw new errors.ServerError({ message: err.message });
 };

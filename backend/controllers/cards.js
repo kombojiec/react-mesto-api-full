@@ -1,5 +1,5 @@
-const Card = require('../models/cards');
 const jwt = require('jsonwebtoken');
+const Card = require('../models/cards');
 const errors = require('../errors/errors');
 const { JWT_SECRET } = require('../config/index');
 

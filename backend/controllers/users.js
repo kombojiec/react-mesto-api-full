@@ -1,12 +1,13 @@
 const bcrypt = require('bcryptjs');
-const celebrate = require('celebrate')
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-const errors = require('../errors/errors')
-const {JWT_SECRET, JWT__TTL} = require('../config/index');
+const errors = require('../errors/errors');
+const { JWT_SECRET, JWT__TTL } = require('../config/index');
 
 const createUser = (req, res, next) => {
-  const {name, email, password, avatar, about } = req.body;
+  const {
+    name, email, password, avatar, about,
+  } = req.body;
 
   User.findOne({ email })
     .then((user) => {
@@ -20,7 +21,9 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => {
       const { _id } = user;
-      res.send({name, email, _id, avatar, about});
+      res.send({
+        name, email, _id, avatar, about,
+      });
     })
 
     .catch(next);
