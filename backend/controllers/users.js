@@ -52,13 +52,13 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find()
     .then((content) => res.send(content))
-    .catch(() => res.status(404).send({ message: 'Пользователи не найдены' }));
+    .catch(() => next(new errors.NotFound('Пользователи не найдены')));
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .orFail(new Error('No user'))
     .then((user) => {
@@ -66,14 +66,14 @@ const getUserById = (req, res) => {
     })
     .catch((error) => {
       if (error.message === 'No user' || error.name === 'CastError') {
-        res.status(404).send({ message: 'Пользователь не найден' });
+        next(new errors.NotFound('Пользователь не найден'));
       } else {
-        res.status(500).send({ message: 'Сервер не отвечает' });
+        next(new errors.ServerError('Сервер не отвечает'));
       }
     });
 };
 
-const updateUserInfo = (req, res) => {
+const updateUserInfo = (req, res, next) => {
   const { name, about } = req.body;
   const id = req.user._id;
   User.findByIdAndUpdate(id, {
@@ -87,14 +87,14 @@ const updateUserInfo = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'validationError') {
-        res.status(400).send({ message: 'Не корректные данные' });
+        next(new errors.NotFound('Не корректные данные'));
       } else {
-        res.status(500).send({ message: 'Что-то пошло не так...' });
+        next(new errors.ServerError('Что-то пошло не так...'));
       }
     });
 };
 
-const updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const id = req.user._id;
   User.findByIdAndUpdate(id, { avatar }, {
@@ -104,9 +104,9 @@ const updateUserAvatar = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'validationError') {
-        res.status(400).send({ message: 'Не корректные данные' });
+        next(new errors.BadRequest('Не корректные данные'));
       } else {
-        res.status(500).send({ message: 'Что-то пошло не так...' });
+        next(new errors.BadRequest('Что-то пошло не так...'));
       }
     });
 };

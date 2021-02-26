@@ -3,7 +3,7 @@ const Card = require('../models/cards');
 const errors = require('../errors/errors');
 const { JWT_SECRET } = require('../config/index');
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({
     name,
@@ -13,20 +13,20 @@ const createCard = (req, res) => {
     .then((card) => res.send(card))
     .catch((error) => {
       if (error.name === 'validationError') {
-        res.status(400).send({ message: 'Не корректные данные' });
+        next(new errors.BadRequest('Не корректные данные'));
       } else {
-        res.status(500).send({ message: 'Что-то пошло не так...' });
+        next(new errors.ServerError('Что-то пошло не так...'));
       }
     });
 };
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find()
     .then((cards) => res.send(cards))
-    .catch(() => res.status(500).send({ message: 'Сервер не отвечает' }));
+    .catch(() => next(errors.ServerError('Сервер не отвечает.')));
 };
 
-const removeCard = (req, res) => {
+const removeCard = (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization.replace('Bearer ', '');
   const { _id } = jwt.verify(token, JWT_SECRET);
@@ -39,14 +39,14 @@ const removeCard = (req, res) => {
     .then((item) => res.send(item))
     .catch((error) => {
       if (error.message === 'Not Found') {
-        res.status(404).send({ message: 'Такой карточки нет.' });
+        next(new errors.NotFound('Такой карточки нет.'));
       } else {
-        res.status(500).send({ message: 'Сервер не отвечает' });
+        next(new errors.ServerError('Сервер не отвечает.'));
       }
     });
 };
 
-const addLike = (req, res) => {
+const addLike = (req, res, next) => {
   const { id } = req.params;
   const userId = req.user._id;
   Card.findByIdAndUpdate(id,
@@ -58,16 +58,16 @@ const addLike = (req, res) => {
     })
     .catch((error) => {
       if (error.message === 'Has already') {
-        res.status(404).send({ message: 'Лайк уже поставлен' });
+        next(new errors.NotFound('Лайк уже поставлен'));
       } else if (error.name === 'CastError') {
-        res.status(404).send({ message: 'Пользователь не найден' });
+        next(new errors.NotFound('Пользователь не найден'));
       } else {
-        res.status(500).send({ message: 'Сервер не отвечает' });
+        next(new errors.ServerError('Сервер не отвечает.'));
       }
     });
 };
 
-const removeLike = (req, res) => {
+const removeLike = (req, res, next) => {
   const { id } = req.params;
   const userId = req.user._id;
   Card.findByIdAndUpdate(id,
@@ -77,11 +77,11 @@ const removeLike = (req, res) => {
     .then((card) => res.send(card))
     .catch((error) => {
       if (error.message === 'Has already') {
-        res.status(404).send({ message: 'Лайк уже удалён' });
+        next(new errors.NotFound('Лайк уже удалён'));
       } else if (error.name === 'CastError') {
-        res.status(404).send({ message: 'Пользователь не найден' });
+        next(new errors.NotFound('Пользователь не найден'));
       } else {
-        res.status(500).send({ message: 'Сервер не отвечает' });
+        next(new errors.ServerError('Сервер не отвечает'));
       }
     });
 };
