@@ -60,7 +60,7 @@ const getUsers = (req, res, next) => {
 
 const getUserById = (req, res, next) => {
   User.findById(req.params.id)
-    .orFail(new Error('No user'))
+    .orFail(new errors.NotFound('No user'))
     .then((user) => {
       res.send(user);
     })
