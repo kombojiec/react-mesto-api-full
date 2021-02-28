@@ -46,5 +46,6 @@ app.use(errorLogger);// Логгер ошибок
 app.use(errorHandler); // Обработчик ошибок
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line
   console.log(`server listening port ${PORT}`);
 });
