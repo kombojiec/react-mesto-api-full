@@ -112,9 +112,9 @@ function App(props) {
     isPopupConfirmation, isErrorPopupOpen]);
 
   useEffect(()=>{
-    if(!loggedIn){
-      return
-    }
+//    if(!loggedIn){
+//      return
+//    }
     api.getUser()
     .then(response => {
       ownerInfo.id = response._id;
@@ -124,7 +124,7 @@ function App(props) {
       setErrorResponse(response);
       setIsErrorPopupOpen(true)
     })    
-  }, [loggedIn])
+  }, [])
 
   function handleUpdateUser(data){
     api.setUser(data)
@@ -157,9 +157,9 @@ function App(props) {
   }  
 
   useEffect(()=>{
-    if(!loggedIn){
-      return
-    }
+ //   if(!loggedIn){
+ //     return
+ //   }
     api.getCards()
     .then(response =>{
       setCards(response.map(item => item));
@@ -168,7 +168,7 @@ function App(props) {
       setErrorResponse(result);
       setIsErrorPopupOpen(true)
     });
-  },[loggedIn]);
+  },[]);
 
   function handleCardLike(card){
     const isLiked = card.likes.some(like => like._id === currentUser._id);

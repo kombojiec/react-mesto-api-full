@@ -16,7 +16,7 @@ class Api {
   getUser() {
     return fetch(this._url + '/users/me', {
         headers: {
-          authorization: this._authorization
+          authorization: `Bearer ${this._authorization}`
         }
       })
       .then(res => this._checkResponse(res));
