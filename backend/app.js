@@ -30,6 +30,7 @@ const corsOptions = {
 };
 
 
+const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -37,7 +38,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
-app.use(cors(Options));
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   const { origin } = req.headers;
