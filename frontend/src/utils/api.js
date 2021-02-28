@@ -1,10 +1,10 @@
 import ownerInfo from './constants';
 //=======================================
 class Api {
-  constructor(info) {
-    this._cohort = info.cohort;
-    this._authorization = info.authorization;
-    this._url = info.url;
+  constructor() {
+    // this._cohort = info.cohort;
+    // this._authorization = info.authorization;
+    this._url = 'api.kombojiec.students.nomoreparties.space';
   }
 
   //Метод проверки статуса
@@ -128,5 +128,5 @@ class Api {
 }
 
 
-const api = new Api(ownerInfo);
+const api = new Api();
 export default api;
