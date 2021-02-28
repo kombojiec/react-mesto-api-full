@@ -12,7 +12,10 @@ const myInfo = (req, res) => {
   try {
     const { _id } = jwt.verify(token, JWT_SECRET);
     User.findById(_id)
-      .then((user) => res.status(200).send(user));
+      .then((user) => {
+        console.log(user);
+        res.status(200).send(user);
+      });
   } catch (error) {
     throw new errors.Unauthorized('Нет доступа');
   }

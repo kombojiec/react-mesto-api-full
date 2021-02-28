@@ -64,10 +64,13 @@ function App(props) {
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
+    console.log(jwt, "  getTocken==========")
     if(jwt){
+      console.log(jwt, "  checkTocken==========")
       checkToken(jwt)
       .then(res => {
         if (res){
+          console.log(res)
           setEmail(res.data.email)  
           setLoggedIn(true); 
         }        
@@ -247,7 +250,7 @@ function App(props) {
     .then(res => {
       if(res.token){
         logIn(data.email);
-        localStorage.setItem('jwt', res.token);
+        localStorage.setItem('jwt', res.jwt);
         props.history.push('/');
       }else{
         return

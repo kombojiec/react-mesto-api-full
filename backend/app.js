@@ -14,7 +14,6 @@ const errors = require('./errors/errors');
 
 const { PORT = 3000 } = process.env;
 
-
 const allowedCors = [
   'https://kombojiec.students.nomoreparties.space',
   'https://www.kombojiec.students.nomoreparties.space',
@@ -28,7 +27,6 @@ const corsOptions = {
   origin: allowedCors,
   optionsSuccessStatus: 200,
 };
-
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb', {
