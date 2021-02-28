@@ -13,7 +13,6 @@ const myInfo = (req, res) => {
     const { _id } = jwt.verify(token, JWT_SECRET);
     User.findById(_id)
       .then((user) => {
-        console.log(user);
         res.status(200).send(user);
       });
   } catch (error) {

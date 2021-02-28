@@ -4,11 +4,12 @@ const errors = require('../errors/errors');
 const { JWT_SECRET } = require('../config/index');
 
 const createCard = (req, res, next) => {
-  const { name, link } = req.body;
+  const { name, link, owner } = req.body;
+  console.log(req.body);
   Card.create({
     name,
     link,
-    owner: req.user._id,
+    owner,
   })
     .then((card) => res.send(card))
     .catch((error) => {

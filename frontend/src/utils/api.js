@@ -1,6 +1,7 @@
 class Api {
   constructor() {
     this._url = 'https://api.kombojiec.students.nomoreparties.space';
+    this._authorization = localStorage.getItem('jwt');
   }
 
   //Метод проверки статуса
@@ -45,7 +46,7 @@ class Api {
   }
 
   // Добавлнение новой карточки
-  addCard(name, link){
+  addCard(name, link, currentUser){
     return fetch(this._url + '/cards', {
       method: 'POST',
       headers: {
@@ -54,7 +55,8 @@ class Api {
       },
       body: JSON.stringify({
         name: name,
-        link: link
+        link: link,
+        owner: currentUser._id,
       })
     })
     .then(res => this._checkResponse(res));

@@ -64,14 +64,11 @@ function App(props) {
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    console.log(jwt, "  getTocken==========")
     if(jwt){
-      console.log(jwt, "  checkTocken==========")
       checkToken(jwt)
       .then(res => {
         if (res){
-          console.log(res)
-          setEmail(res.data.email)  
+          setEmail(res.email)  
           setLoggedIn(true); 
         }        
       })
@@ -115,6 +112,9 @@ function App(props) {
     isPopupConfirmation, isErrorPopupOpen]);
 
   useEffect(()=>{
+    if(!loggedIn){
+      return
+    }
     api.getUser()
     .then(response => {
       ownerInfo.id = response._id;
@@ -124,7 +124,7 @@ function App(props) {
       setErrorResponse(response);
       setIsErrorPopupOpen(true)
     })    
-  }, [])
+  }, [loggedIn])
 
   function handleUpdateUser(data){
     api.setUser(data)
@@ -157,6 +157,9 @@ function App(props) {
   }  
 
   useEffect(()=>{
+    if(!loggedIn){
+      return
+    }
     api.getCards()
     .then(response =>{
       setCards(response.map(item => item));
@@ -165,7 +168,7 @@ function App(props) {
       setErrorResponse(result);
       setIsErrorPopupOpen(true)
     });
-  },[]);
+  },[loggedIn]);
 
   function handleCardLike(card){
     const isLiked = card.likes.some(like => like._id === currentUser._id);
@@ -201,7 +204,7 @@ function App(props) {
   }  
 
   function handleAddPlaceSubmit(data){
-    api.addCard(data.name, data.link)
+    api.addCard(data.name, data.link, currentUser)
     .then(result => {
       setCards([result, ...cards]);
       setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
@@ -248,7 +251,7 @@ function App(props) {
   const logInUser = (data) => {
     authorization(data.email, data.password)
     .then(res => {
-      if(res.token){
+      if(res.jwt){
         logIn(data.email);
         localStorage.setItem('jwt', res.jwt);
         props.history.push('/');
