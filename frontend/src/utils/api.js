@@ -1,9 +1,5 @@
-import ownerInfo from './constants';
-//=======================================
 class Api {
   constructor() {
-    // this._cohort = info.cohort;
-    // this._authorization = info.authorization;
     this._url = 'api.kombojiec.students.nomoreparties.space';
   }
 
