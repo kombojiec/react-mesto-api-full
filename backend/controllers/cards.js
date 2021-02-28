@@ -33,7 +33,7 @@ const removeCard = (req, res, next) => {
   const { _id } = jwt.verify(token, JWT_SECRET);
   const card = Card.findById(req.params.id);
   if (card.owner !== _id) {
-    throw new errors.Forbidden('Можно удалять только свои фоточки.');
+    throw new errors.Forbidden(card.owner);
   }
   Card.findOneAndRemove(req.params.id)
     .orFail(new Error('Not Found'))

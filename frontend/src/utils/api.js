@@ -1,7 +1,7 @@
 class Api {
   constructor() {
     this._url = 'https://api.kombojiec.students.nomoreparties.space';
-    this._authorization = localStorage.getItem('jwt');
+    this._authorization = `Bearer ${localStorage.getItem('jwt')}`;
   }
 
   //Метод проверки статуса
@@ -16,7 +16,7 @@ class Api {
   getUser() {
     return fetch(this._url + '/users/me', {
         headers: {
-          authorization: `Bearer ${this._authorization}`
+          authorization: this._authorization
         }
       })
       .then(res => this._checkResponse(res));
@@ -65,6 +65,8 @@ class Api {
 
   // Удаление карточки
   removeCard(id){
+    console.log(id)
+    console.log(this._authorization)
     return fetch(this._url + '/cards/' + id, {
       method: 'DELETE',
       headers: {
@@ -88,7 +90,7 @@ class Api {
   }
 
   // Удаление лайка
-  removeLike(id){
+  removeLike(id){    
     return fetch(this._url + '/cards/likes/' + id, {
       method: 'DELETE',
       headers: {
