@@ -1,6 +1,6 @@
 class Api {
   constructor() {
-    this._url = 'api.kombojiec.students.nomoreparties.space';
+    this._url = 'https://api.kombojiec.students.nomoreparties.space';
   }
 
   //Метод проверки статуса

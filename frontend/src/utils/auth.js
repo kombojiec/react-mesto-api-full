@@ -1,4 +1,4 @@
-export const BASE_URL = 'api.kombojiec.students.nomoreparties.space';
+export const BASE_URL = 'https://api.kombojiec.students.nomoreparties.space';
 
 function checkResponse(res){
   if (res.ok) {
