@@ -74,20 +74,21 @@ function App(props) {
           setLoggedIn(true); 
         }        
       })
-      .then(() => props.history.push('/'))
-      .then(() => {
-        api.getCards()
-          .then(response =>{
-            setCards(response.map(item => item));
-          })
-          .catch(result => {
-            setErrorResponse(result);
-          }
-        );
-      })
+      .then(() => props.history.push('/'))      
       .catch(error => console.log(error));
     }
   },[props.history, email, loggedIn])
+
+  useEffect(()=>{
+    api.getCards()
+    .then(response =>{
+      setCards(response.map(item => item));
+    })
+    .catch(result => {
+      setErrorResponse(result);
+      setIsErrorPopupOpen(true)
+    });
+  },[]);
 
   useEffect(()=>{
     const popupOpened = ()=>{
@@ -152,18 +153,6 @@ function App(props) {
       setIsLoading('');
     });
   }  
-
-  
-  // useEffect(()=>{
-  //   api.getCards()
-  //   .then(response =>{
-  //     setCards(response.map(item => item));
-  //   })
-  //   .catch(result => {
-  //     setErrorResponse(result);
-  //     // setIsErrorPopupOpen(true)
-  //   });
-  // },[loggedIn]);
 
   function handleCardLike(card){
     const isLiked = card.likes.some(like => like === currentUser._id);
