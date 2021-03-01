@@ -75,7 +75,7 @@ function App(props) {
       .then(() => props.history.push('/'))
       .catch(error => console.log(error));
     }
-  },[props.history])
+  },[])
 
   useEffect(()=>{
     const popupOpened = ()=>{
@@ -112,9 +112,6 @@ function App(props) {
     isPopupConfirmation, isErrorPopupOpen]);
 
   useEffect(()=>{
-//    if(!loggedIn){
-//      return
-//    }
     api.getUser()
     .then(response => {
       ownerInfo.id = response._id;
@@ -157,9 +154,6 @@ function App(props) {
   }  
 
   useEffect(()=>{
- //   if(!loggedIn){
- //     return
- //   }
     api.getCards()
     .then(response =>{
       setCards(response.map(item => item));

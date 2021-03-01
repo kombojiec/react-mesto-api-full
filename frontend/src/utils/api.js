@@ -1,7 +1,8 @@
 class Api {
   constructor() {
     this._url = 'https://api.kombojiec.students.nomoreparties.space';
-    this._authorization = `Bearer ${localStorage.getItem('jwt')}`;
+    this._jwt = localStorage.getItem('jwt');
+    this._authorization = `Bearer ` + this._jwt;
   }
 
   //Метод проверки статуса

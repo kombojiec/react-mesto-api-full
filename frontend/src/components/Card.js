@@ -5,13 +5,10 @@ import CurrentUserContext from '../contexts/CurrentUserContext'
 const Card = (props) =>{
 
   const currentUser = useContext(CurrentUserContext);
-  console.log(currentUser, '===========User==')
-  console.log(props.card, '======props====')
-
-  const isOwn = props.owner === currentUser._id;
-console.log(isOwn, '===isownCard===')
+  
+  const isOwn = props.card.owner === currentUser._id;
   const cardDeleteButtonClassName = (
-    `element__basket ${!isOwn? 
+    `element__basket ${isOwn? 
     '' :
     'element__basket_hiden'}`
   )
