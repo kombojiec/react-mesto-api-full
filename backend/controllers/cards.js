@@ -31,10 +31,16 @@ const removeCard = (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization.replace('Bearer ', '');
   const { _id } = jwt.verify(token, JWT_SECRET);
-  const card = Card.findById(req.params.id);
-  if (card.owner !== _id) {
-    throw new errors.Forbidden(card.owner);
-  }
+  const card = Card.findById(req.params.id, (err, res) => {
+    if(err){
+      next(new errors.NotFound('Такой карточки нет'))
+    }else { return res}
+  })
+  .then(card => {
+    if (card.owner !== _id) {
+      throw new errors.Forbidden('Можно удалять только свои фоточки');
+    }
+})
   Card.findOneAndRemove(req.params.id)
     .orFail(new Error('Not Found'))
     .then((item) => res.send(item))
@@ -48,8 +54,11 @@ const removeCard = (req, res, next) => {
 };
 
 const addLike = (req, res, next) => {
-  const { id } = req.params;
-  const userId = req.user._id;
+  const id = req.params.id;
+  const { authorization } = req.headers;
+  const token = authorization.replace('Bearer ', '');
+  const { _id } = jwt.verify(token, JWT_SECRET);
+  const userId = _id;
   Card.findByIdAndUpdate(id,
     { $addToSet: { likes: userId } },
     { new: true })
@@ -70,7 +79,10 @@ const addLike = (req, res, next) => {
 
 const removeLike = (req, res, next) => {
   const { id } = req.params;
-  const userId = req.user._id;
+  const { authorization } = req.headers;
+  const token = authorization.replace('Bearer ', '');
+  const { _id } = jwt.verify(token, JWT_SECRET);
+  const userId = _id;
   Card.findByIdAndUpdate(id,
     { $pull: { likes: userId } },
     { new: true })
