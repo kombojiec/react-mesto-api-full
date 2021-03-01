@@ -150,9 +150,9 @@ function App(props) {
     })
     .catch(result => {
       setErrorResponse(result);
-      setIsErrorPopupOpen(true)
+      // setIsErrorPopupOpen(true)
     });
-  },[]);
+  },[loggedIn]);
 
   function handleCardLike(card){
     const isLiked = card.likes.some(like => like === currentUser._id);
