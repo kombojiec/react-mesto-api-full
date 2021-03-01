@@ -68,6 +68,8 @@ function App(props) {
       checkToken(jwt)
       .then(res => {
         if (res){
+          ownerInfo.id = res._id;
+          setCurrentUser(res);
           setEmail(res.email)  
           setLoggedIn(true); 
         }        
@@ -75,7 +77,7 @@ function App(props) {
       .then(() => props.history.push('/'))
       .catch(error => console.log(error));
     }
-  },[])
+  },[props.history, email])
 
   useEffect(()=>{
     const popupOpened = ()=>{
@@ -110,18 +112,6 @@ function App(props) {
   },[isEditAvatarPopupOpen,infoTooltipIsOpen.state, isEditProfilePopupOpen,
     imageShow, isAddPlacePopupOpen, 
     isPopupConfirmation, isErrorPopupOpen]);
-
-  useEffect(()=>{
-    api.getUser()
-    .then(response => {
-      ownerInfo.id = response._id;
-      setCurrentUser(response);
-    })
-    .catch((response)=> {
-      setErrorResponse(response);
-      setIsErrorPopupOpen(true)
-    })    
-  }, [])
 
   function handleUpdateUser(data){
     api.setUser(data)
@@ -222,6 +212,8 @@ function App(props) {
 
   const logOut = () => {
     localStorage.removeItem('jwt');
+    ownerInfo.id = '';
+    setCurrentUser({});
     props.history.push('/signup')
     setEmail('')
   }
