@@ -77,7 +77,7 @@ function App(props) {
       .then(() => props.history.push('/'))
       .catch(error => console.log(error));
     }
-  },[props.history, email])
+  },[props.history, email, loggedIn])
 
   useEffect(()=>{
     const popupOpened = ()=>{
