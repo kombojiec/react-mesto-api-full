@@ -5,7 +5,6 @@ const { JWT_SECRET } = require('../config/index');
 
 const createCard = (req, res, next) => {
   const { name, link, owner } = req.body;
-  console.log(req.body);
   Card.create({
     name,
     link,
@@ -28,20 +27,24 @@ const getCards = (req, res, next) => {
 };
 
 const removeCard = (req, res, next) => {
+  const cardId = req.params.id;
   const { authorization } = req.headers;
   const token = authorization.replace('Bearer ', '');
   const { _id } = jwt.verify(token, JWT_SECRET);
-  const card = Card.findById(req.params.id, (err, res) => {
-    if(err){
-      next(new errors.NotFound('Такой карточки нет'))
-    }else { return res}
+  // eslint-disable-next-line
+  Card.findById(cardId, (err, result) => {
+    if (err) {
+      next(new errors.NotFound('Такой карточки нет'));
+    } else { return result; }
   })
-  .then(card => {
-    if (card.owner !== _id) {
-      throw new errors.Forbidden('Можно удалять только свои фоточки');
-    }
-})
-  Card.findOneAndRemove(req.params.id)
+    .then((card) => {
+      // eslint-disable-next-line
+      if (card.owner != _id) {
+        throw new errors.Forbidden('Можно удалять только свои фоточки');
+      }
+    });
+
+  Card.findByIdAndRemove(cardId)
     .orFail(new Error('Not Found'))
     .then((item) => res.send(item))
     .catch((error) => {
@@ -54,7 +57,7 @@ const removeCard = (req, res, next) => {
 };
 
 const addLike = (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const { authorization } = req.headers;
   const token = authorization.replace('Bearer ', '');
   const { _id } = jwt.verify(token, JWT_SECRET);

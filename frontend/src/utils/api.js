@@ -1,6 +1,7 @@
 class Api {
-  constructor() {
-    this._url = 'https://api.kombojiec.students.nomoreparties.space';
+  constructor(baseURL) {
+    // this._url = 'https://api.kombojiec.students.nomoreparties.space';
+    this._url = baseURL;
     this._jwt = localStorage.getItem('jwt');
     this._authorization = `Bearer ` + this._jwt;
   }
@@ -66,8 +67,6 @@ class Api {
 
   // Удаление карточки
   removeCard(id){
-    console.log(id)
-    console.log(this._authorization)
     return fetch(this._url + '/cards/' + id, {
       method: 'DELETE',
       headers: {
@@ -129,5 +128,5 @@ class Api {
 }
 
 
-const api = new Api();
+const api = new Api('https://api.kombojiec.students.nomoreparties.space');
 export default api;

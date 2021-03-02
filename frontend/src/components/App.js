@@ -6,7 +6,7 @@ import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
-import ownerInfo from '../utils/constants'
+// import ownerInfo from '../utils/constants'
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -68,7 +68,7 @@ function App(props) {
       checkToken(jwt)
       .then(res => {
         if (res){
-          ownerInfo.id = res._id;
+          // ownerInfo.id = res._id;
           setCurrentUser(res);
           setEmail(res.email)  
           setLoggedIn(true); 
@@ -202,6 +202,7 @@ function App(props) {
     });
   }
 
+
   const handleButtonLoading = (value) =>{
     setIsLoading(value);
   }
@@ -212,7 +213,7 @@ function App(props) {
 
   const logOut = () => {
     localStorage.removeItem('jwt');
-    ownerInfo.id = '';
+    // ownerInfo.id = '';
     setCurrentUser({});
     props.history.push('/signup')
     setEmail('')
