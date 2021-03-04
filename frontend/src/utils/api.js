@@ -58,7 +58,6 @@ class Api {
       body: JSON.stringify({
         name: name,
         link: link,
-        owner: currentUser._id,
       })
     })
     .then(res => this._checkResponse(res));

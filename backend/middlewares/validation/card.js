@@ -10,6 +10,5 @@ module.exports = celebrate({
       }
       return helper.mesage('Неверный адрес картинки');
     }),
-    owner: Joi.string().length(24).hex().required(),
   }),
 });
