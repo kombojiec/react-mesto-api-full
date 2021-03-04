@@ -8,7 +8,7 @@ module.exports = celebrate({
       if (validator.isURL(value)) {
         return value;
       }
-      return helper.mesage('Неверный адрес картинки');
+      return helper.message('Неверный адрес картинки');
     }),
   }),
 });

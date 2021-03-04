@@ -1,3 +1,5 @@
+import ownerInfo from './constants';
+
 class Api {
   constructor(baseURL) {
     // this._url = 'https://api.kombojiec.students.nomoreparties.space';
@@ -127,5 +129,5 @@ class Api {
 }
 
 
-const api = new Api('https://api.kombojiec.students.nomoreparties.space');
+const api = new Api(ownerInfo.BASE_URL);
 export default api;

@@ -1,7 +1,7 @@
 // Objects==============================
 
 const ownerInfo = {
-  url: 'https://api.kombojiec.students.nomoreparties.space',
+  BASE_URL: process.env.REACT_APP_BASE_URL || 'http://localhost:3000'  
 };
 
 export default ownerInfo;
