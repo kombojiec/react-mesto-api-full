@@ -12,7 +12,4 @@ module.exports = celebrate({
     }),
     owner: Joi.string().length(24).hex().required(),
   }),
-  // params: Joi.object().keys({
-  //   owner: Joi.string().length(24).hex().required(),
-  // }),
 });
