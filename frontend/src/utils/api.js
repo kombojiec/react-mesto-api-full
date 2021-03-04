@@ -2,7 +2,6 @@ import ownerInfo from './constants';
 
 class Api {
   constructor(baseURL) {
-    // this._url = 'https://api.kombojiec.students.nomoreparties.space';
     this._url = baseURL;
     this._jwt = localStorage.getItem('jwt');
     this._authorization = `Bearer ` + this._jwt;

@@ -16,7 +16,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "REACT_APP_BASE_URL=https://api.kombojiec.students.nomoreparties.space npm run build && scp -r ./build/* kombojiec@178.154.251.128:/home/kombojiec/mesto-frontend",
+    "deploy": "scp -r ./build/* kombojiec@178.154.251.128:/home/kombojiec/react-mesto-api-full/frontend/build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
